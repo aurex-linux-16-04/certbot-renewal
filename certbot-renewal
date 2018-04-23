@@ -1,0 +1,12 @@
+#!/bin/sh
+LIVE_CERT="/etc/letsencrypt/live/ausiasmarch.net/cert.pem"
+OLD_TARGET_CERT="$(readlink -f "$LIVE_CERT")"
+certbot -q renew || true
+NEW_TARGET_CERT="$(readlink -f "$LIVE_CERT")"
+if [ "$OLD_TARGET_CERT" != "$NEW_TARGET_CERT" ] ; then
+	service nginx restart || true
+fi
+exit 0
+	
+
+
